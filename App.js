@@ -38,10 +38,10 @@ export default function App() {
         <View>
         { false ? <LandingScreen /> : <LoginScreen />}
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Landing" component= {LandingScreen} />
+          <Stack.Navigator initialRouteName='Landing'>
             <Stack.Screen name="Course" component= {SelectCourse} />
             <Stack.Screen name="Final" component= {FinalLogin} />
+            <Stack.Screen name="Landing" component= {LandingScreen} />
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="auto" />

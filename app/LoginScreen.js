@@ -13,7 +13,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [year, setyear] = useState('');
   const [sem, setsem] = useState('');
-  const [dept,setdept] = useState('');
+  const [dept,setdept] = useState('CSE');
 
 
   const handleRegistration = async () => {
