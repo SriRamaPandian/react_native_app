@@ -11,6 +11,8 @@ import SelectCourse from './app/SelectCourse.js';
 import FinalLogin from './app/FinalLogin.js'
 
 
+
+
 export default function App() {
   useEffect(() => {
     checkLoginStatus();
@@ -38,7 +40,8 @@ export default function App() {
         <View>
         { false ? <LandingScreen /> : <LoginScreen />}
         <NavigationContainer>
-          <Stack.Navigator initialRouteName='Landing'>
+          <Stack.Navigator initialRouteName='Login'>
+            <Stack.Screen name="Login" component= {LoginScreen} />
             <Stack.Screen name="Course" component= {SelectCourse} />
             <Stack.Screen name="Final" component= {FinalLogin} />
             <Stack.Screen name="Landing" component= {LandingScreen} />

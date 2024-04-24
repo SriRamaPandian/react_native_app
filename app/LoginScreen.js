@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert , SafeAreaView , Image } from 'react-native';
+import { View, Text ,TextInput, TouchableOpacity , StyleSheet, Alert , SafeAreaView , Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Logo from '../assets/e-learn.jpeg';
 import { Picker } from '@react-native-picker/picker';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
   const [rollno, setrollno] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [year, setyear] = useState('');
   const [sem, setsem] = useState('');
-  const [dept,setdept] = useState('CSE');
+  const [dept,setdept] = useState(null);
 
+  //const navigation = useNavigation();
 
   const handleRegistration = async () => {
     try {
-      const response = await axios.post('http://192.168.189.200:3000/login', {
+      const response = await axios.post('http://192.168.132.200:3000/login', {
         rollno,
         username,
         email,
@@ -33,7 +35,7 @@ const LoginScreen = ({ navigation }) => {
         await AsyncStorage.setItem('isLoggedIn','true');
         Alert.alert('Success', 'Account created successfully.');
         // Navigate to the login screen upon successful registration
-        navigation.navigate('Course');
+        //navigation.navigate("Course",{rollno});
       }
     } catch (error) {
       console.error('Error occurred during registration:', error.message);
@@ -43,7 +45,10 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.body}>
+    <SafeAreaView>
+    <LinearGradient 
+       style={styles.body}
+       colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
     <View style={styles.container}>
       <Image
       source={Logo}
@@ -51,12 +56,14 @@ const LoginScreen = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Username"
+        placeholderTextColor={'#000000'}
         onChangeText={text => setUsername(text)}
         value={username}
       />
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor={'#000000'}
         onChangeText={text => setEmail(text)}
         value={email}
         keyboardType="email-address"
@@ -64,6 +71,7 @@ const LoginScreen = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor={'#000000'}
         onChangeText={text => setPassword(text)}
         value={password}
         secureTextEntry
@@ -71,6 +79,7 @@ const LoginScreen = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Rollno"
+        placeholderTextColor={'#000000'}
         onChangeText={text => setrollno(text)}
         value={rollno}
         keyboardType="number-pad"
@@ -78,6 +87,7 @@ const LoginScreen = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Year"
+        placeholderTextColor={'#000000'}
         onChangeText={text => setyear(text)}
         value={year}
         keyboardType="number-pad"
@@ -85,23 +95,39 @@ const LoginScreen = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Sem"
+        placeholderTextColor={'#000000'}
         onChangeText={text => setsem(text)}
         value={sem}
         keyboardType="number-pad"
       />
-      <Picker
+      <View style={styles.drop}>
+      {dept === null ? (
+        <Picker
         selectedValue={dept}
-        style={styles.input}
+        onValueChange={(itemValue) => setdept(itemValue)}
+      >
+        <Picker.Item label="Department" value={null} />
+        <Picker.Item label="CSE" value="CSE" />
+        <Picker.Item label="MECH" value="MECH" />
+        <Picker.Item label="ECE" value="ECE" />
+      </Picker>
+      ) : 
+      (<Picker
+        selectedValue={dept}
         onValueChange={(itemValue) => setdept(itemValue)}
       >
         <Picker.Item label="CSE" value="CSE" />
         <Picker.Item label="MECH" value="MECH" />
         <Picker.Item label="ECE" value="ECE" />
-      </Picker>
-      <Button
+      </Picker>)}
+      </View>
+      <TouchableOpacity
       style={styles.button}  
-      title="Register" onPress={handleRegistration} />
+      onPress={handleRegistration} >
+        <Text>CREATE ACCOUNT</Text>
+      </TouchableOpacity>
     </View>
+    </LinearGradient>
     </SafeAreaView>
   );
 };
@@ -123,34 +149,46 @@ const styles = StyleSheet.create({
   },
   body: {
     fontfamily: 'Arial',
-    backgroundColor: '#BEFCFE',
+    //backgroundColor: '#7AFFFA',
     margin: 0,
     padding: 0,
     display: 'flex',
     justifycontent: 'center',
     alignitems: 'center',
-    height: 1000,
+    maxHeight: 1200,
     width: '100%',
   },
   input: {
     width: '80%',
     marginBottom: 30,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
+    padding: 13,
+    borderWidth: 3,
+    borderColor: '#03182F',
+    backgroundColor: '#fff',
     borderRadius: 15,
-    backgroundColor: '#B437FB',
-    color: '#AAFDA5',
+    color: '#03182F',
+  },
+  drop: {
+    width: '80%',
+    marginBottom: 30,
+    padding: 0,
+    borderWidth: 3,
+    borderColor: '#03182F',
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    color: '#000000',
   },
   button: {
-    width: '100%',
+    width: '50%',
+    alignItems: 'center',
     padding: 10,
-    border: 'none',
-    borderradius: 5,
-    backgroundColor: '#007bff',
+    borderWidth: 2.5,
+    borderRadius: 15,
+    backgroundColor: '#5AB9EA',
     color: '#fff',
     cursor: 'pointer',
   },
+  
 });
 
 export default LoginScreen;
