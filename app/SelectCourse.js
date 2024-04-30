@@ -1,19 +1,35 @@
 import React from 'react';
-import { Text , View , Button } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-
+import { View, Text, Button , StyleSheet , ScrollView } from 'react-native';
+//import { useNavigation } from '@react-navigation/native';
 
 const SelectCourse = ({ navigation }) => {
-  const route = useRoute();
-  const {rollno} = route.params || {};
+  //const navigation = useNavigation();
+  return (
+    <View style={styles.container}>
+      <Text style={styles.input}>Select Your Course</Text>
+      <Button
+        title="Next"
+        onPress={() => navigation.replace("Final")}/>
+    </View>
+  );
+};
 
-      return (
-        <View>
-        <Text>Select Your Course and your rollno is {rollno}</Text>
-          <Button
-            title="next"
-            onPress={() => navigation.navigate('Final',)} />
-        </View>
-      );
-    }
 export default SelectCourse;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 500,
+    width: 500,
+    backgroundColor:'blue',
+    overflow: 'scroll',
+  },
+  input: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 24,
+  },
+});

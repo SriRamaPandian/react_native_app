@@ -11,6 +11,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@react-navigation/native": "^6.1.17",
+    "@react-navigation/stack": "^6.3.29",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "mysql": "^2.18.1",
