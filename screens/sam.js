@@ -6,10 +6,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import LoginScreen from './app/LoginScreen.js'
-import LandingScreen from './screens/LandingScreen.js';
-import SelectCourse from './screens/SelectCourse.js';
-import FinalLogin from './screens/FinalLogin.js'
-import LoginScreen from './screens/LoginScreen.js';
+import LandingScreen from './app/LandingScreen.js';
+import SelectCourse from './app/SelectCourse.js';
+import FinalLogin from './app/FinalLogin.js'
+import LoginScreen from './app/LoginScreen.js';
 
 
 
@@ -35,17 +35,10 @@ export default function App() {
   };
 
 return (
-<SafeAreaView className='flex-1'>
-  <NavigationContainer>
-    <Stack.Navigator 
-    initialRouteName={ true ? "Login" : "Course"}
-    screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Course" component={SelectCourse}/>
-      <Stack.Screen name="Login" component={LoginScreen}/>
-      <Stack.Screen name="Final" component={FinalLogin}/>
-      <Stack.Screen name="Landing" component={LandingScreen}/>
-    </Stack.Navigator>
-  </NavigationContainer>
+<SafeAreaView>
+  <View style={styles.container}>
+    <Text>HEll0</Text>
+  </View>   
   <StatusBar style="auto" />
 </SafeAreaView>
   );
@@ -57,6 +50,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
   },
 });

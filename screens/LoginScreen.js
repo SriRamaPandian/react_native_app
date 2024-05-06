@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
   //const navigation = useNavigation();
 
   const handleRegistration = async () => {
-    try {
+    /*try {
       const response = await axios.post('http://192.168.14.200:3000/login', {
         rollno,
         username,
@@ -41,13 +41,12 @@ const LoginScreen = ({ navigation }) => {
     } catch (error) {
       console.error('Error occurred during registration:', error.message);
       Alert.alert('Error', 'An error occurred while registering. Please try again later.');
-    }
-    navigation.replace("Course",{rollno});
+    }*/
+    navigation.navigate("Course",{rollno});
   };
 
-  return (
-    <LinearGradient 
-       style={styles.container}
+  return (  
+    <LinearGradient
        colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
        <ScrollView>
           <View style={styles.innercontainer}>
@@ -136,18 +135,20 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     maxHeight: 150,
     margin: '30%',
-    padding: 60,
+    marginTop: '10%',
   },
   innercontainer: {
     justifyContent: 'center',
     alignItems: 'center',
     padding: 30,
+    height: 1200,
   },
   container: {
     flex: 1,
-    overflow: 'visible',
-    height: 1200,
-    width: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 700,
+    width: 100,
   },
   input: {
     width: '80%',
