@@ -1,11 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View , ScrollView , SafeAreaView } from 'react-native';
-//import UserDetailsForm from './app/in';
+import { SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//import LoginScreen from './app/LoginScreen.js'
 import MainScreen from './screens/MainScreen.js';
 import SelectCourse from './screens/SelectCourse.js';
 import FinalLogin from './screens/FinalLogin.js'
@@ -30,7 +28,6 @@ export default function App() {
       }
     } catch (error) {
       console.error('Error occurred while checking login status:', error.message);
-      // Handle error
     }
   };
 
