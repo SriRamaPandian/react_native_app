@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text ,TextInput, TouchableOpacity , StyleSheet, Alert , SafeAreaView , Image , ScrollView } from 'react-native';
+import { View, Text ,TextInput, TouchableOpacity , Alert , Image , ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Logo from '../assets/e-learn.jpeg';
 import { Picker } from '@react-native-picker/picker';
 import { LinearGradient } from 'expo-linear-gradient';
-//import { ScrollView } from 'react-native-gesture-handler';
 
 
 const LoginScreen = ({ navigation }) => {
@@ -16,13 +15,12 @@ const LoginScreen = ({ navigation }) => {
   const [year, setyear] = useState('');
   const [sem, setsem] = useState('');
   const [dept,setdept] = useState(null);
-  const [n,setn] = useState('');
 
-  //const navigation = useNavigation();
+  
 
   const handleRegistration = async () => {
     try {
-      const postresponse = await axios.post('http://192.168.166.200:3000/login', {
+      const response = await axios.post('http://192.168.166.200:3000/login', {
         rollno,
         username,
         email,
@@ -31,27 +29,17 @@ const LoginScreen = ({ navigation }) => {
         sem,
         dept,
       });
-
-      const getresponse = await axios.get('http://192.168.166.200:3000/count',
-      {
-        params:{
-          rollno: rollno
-        }
-      });
-      setn(getresponse.data);
-
-      // Assuming the backend responds with a success message upon successful registration
-      if (postresponse.data.message === 'User registered successfully') {
+      
+      if (response.data.message === 'User registered successfully') {
         await AsyncStorage.setItem('isLoggedIn','true');
         Alert.alert('Success', 'Account created successfully.');
-        console.log(n);
-        navigation.navigate("Course",{rollno , n });
-        // Navigate to the login screen upon successful registration
+        navigation.navigate("Course",{rollno});
+        
         
       }
     } catch (error) {
       console.error('Error occurred during registration:', error.message);
-      Alert.alert('Error', 'An error occurred while registering. Please try again later.');
+      Alert.alert('Invalid credentials', 'Please check your credential');
     }
     
   };
