@@ -15,13 +15,14 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [year, setyear] = useState('');
   const [sem, setsem] = useState('');
-  const [dept,setdept] = useState('');
+  const [dept,setdept] = useState(null);
+  const [n,setn] = useState('');
 
   //const navigation = useNavigation();
 
   const handleRegistration = async () => {
-    /*try {
-      const response = await axios.post('http://192.168.14.200:3000/login', {
+    try {
+      const postresponse = await axios.post('http://192.168.166.200:3000/login', {
         rollno,
         username,
         email,
@@ -31,37 +32,47 @@ const LoginScreen = ({ navigation }) => {
         dept,
       });
 
+      const getresponse = await axios.get('http://192.168.166.200:3000/count',
+      {
+        params:{
+          rollno: rollno
+        }
+      });
+      setn(getresponse.data);
+
       // Assuming the backend responds with a success message upon successful registration
-      if (response.data.message === 'User registered successfully') {
+      if (postresponse.data.message === 'User registered successfully') {
         await AsyncStorage.setItem('isLoggedIn','true');
         Alert.alert('Success', 'Account created successfully.');
+        console.log(n);
+        navigation.navigate("Course",{rollno , n });
         // Navigate to the login screen upon successful registration
         
       }
     } catch (error) {
       console.error('Error occurred during registration:', error.message);
       Alert.alert('Error', 'An error occurred while registering. Please try again later.');
-    }*/
-    navigation.navigate("Course",{rollno});
+    }
+    
   };
 
   return (  
     <LinearGradient
        colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
        <ScrollView>
-          <View style={styles.innercontainer}>
+          <View className='container justify-center items-center h-[1200]'>
             <Image
             source={Logo}
-            style={styles.logo}/>
+            className='w-1/2 max-w-[200] max-h-[200] m-[70] mt-[10]'/>
             <TextInput
-              style={styles.input}
+              className='w-3/4 mb-[30] p-[13] border-2 border-black bg-white rounded-xl text-black'
               placeholder="Username"
               placeholderTextColor={'#000000'}
               onChangeText={text => setUsername(text)}
               value={username}
             />
             <TextInput
-              style={styles.input}
+              className='w-3/4 mb-[30] p-[13] border-2 border-black bg-white rounded-xl text-black'
               placeholder="Email"
               placeholderTextColor={'#000000'}
               onChangeText={text => setEmail(text)}
@@ -69,7 +80,7 @@ const LoginScreen = ({ navigation }) => {
               keyboardType="email-address"
             />
             <TextInput
-              style={styles.input}
+              className='w-3/4 mb-[30] p-[13] border-2 border-black bg-white rounded-xl text-black'
               placeholder="Password"
               placeholderTextColor={'#000000'}
               onChangeText={text => setPassword(text)}
@@ -77,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
               secureTextEntry
             />
             <TextInput
-              style={styles.input}
+              className='w-3/4 mb-[30] p-[13] border-2 border-black bg-white rounded-xl text-black'
               placeholder="Rollno"
               placeholderTextColor={'#000000'}
               onChangeText={text => setrollno(text)}
@@ -85,7 +96,7 @@ const LoginScreen = ({ navigation }) => {
               keyboardType="number-pad"
             />
             <TextInput
-              style={styles.input}
+              className='w-3/4 mb-[30] p-[13] border-2 border-black bg-white rounded-xl text-black'
               placeholder="Year"
               placeholderTextColor={'#000000'}
               onChangeText={text => setyear(text)}
@@ -93,14 +104,14 @@ const LoginScreen = ({ navigation }) => {
               keyboardType="number-pad"
             />
             <TextInput
-              style={styles.input}
+              className='w-3/4 mb-[30] p-[13] border-2 border-black bg-white rounded-xl text-black'
               placeholder="Sem"
               placeholderTextColor={'#000000'}
               onChangeText={text => setsem(text)}
               value={sem}
               keyboardType="number-pad"
             />
-            <View style={styles.drop}>
+            <View className='w-3/4 mb-[60] border-2 border-black bg-white rounded-xl text-black'>
             {dept === null ? (
               <Picker
                 selectedValue={dept}
@@ -119,7 +130,7 @@ const LoginScreen = ({ navigation }) => {
               </Picker>)}
             </View>
             <TouchableOpacity
-            style={styles.button}  
+            className='w-1/2 mb-[30] p-[20] border bg-white rounded-full text-black justify-center items-center bg-cyan-400'  
             onPress={handleRegistration} >
               <Text>CREATE ACCOUNT</Text>
             </TouchableOpacity>
@@ -128,59 +139,5 @@ const LoginScreen = ({ navigation }) => {
     </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  logo: {
-    width: '50%',
-    maxWidth: 300,
-    maxHeight: 150,
-    margin: '30%',
-    marginTop: '10%',
-  },
-  innercontainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 30,
-    height: 1200,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 700,
-    width: 100,
-  },
-  input: {
-    width: '80%',
-    marginBottom: 30,
-    padding: 13,
-    borderWidth: 3,
-    borderColor: '#03182F',
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    color: '#03182F',
-  },
-  drop: {
-    width: '80%',
-    marginBottom: 30,
-    padding: 0,
-    borderWidth: 3,
-    borderColor: '#03182F',
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    color: '#000000',
-  },
-  button: {
-    width: '50%',
-    alignItems: 'center',
-    padding: 10,
-    borderWidth: 2.5,
-    borderRadius: 15,
-    backgroundColor: '#5AB9EA',
-    color: '#fff',
-    cursor: 'pointer',
-  },
-  
-});
 
 export default LoginScreen;
