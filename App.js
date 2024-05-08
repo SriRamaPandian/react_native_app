@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import LoginScreen from './app/LoginScreen.js'
-import LandingScreen from './screens/LandingScreen.js';
+import MainScreen from './screens/MainScreen.js';
 import SelectCourse from './screens/SelectCourse.js';
 import FinalLogin from './screens/FinalLogin.js'
 import LoginScreen from './screens/LoginScreen.js';
@@ -43,20 +43,10 @@ return (
       <Stack.Screen name="Course" component={SelectCourse}/>
       <Stack.Screen name="Login" component={LoginScreen}/>
       <Stack.Screen name="Final" component={FinalLogin}/>
-      <Stack.Screen name="Landing" component={LandingScreen}/>
+      <Stack.Screen name="Main" component={MainScreen}/>
     </Stack.Navigator>
   </NavigationContainer>
   <StatusBar style="auto" />
 </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
-});

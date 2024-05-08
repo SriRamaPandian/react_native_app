@@ -37,6 +37,31 @@ const connection = mysql.createConnection({
     });
   });
 
+  app.get('/course', (req, res) => {    
+               
+    const query = "SELECT courses FROM Courses WHERE dept_name=(SELECT dept_name FROM Profiles WHERE rollno=?) AND sem=(SELECT sem FROM Profiles WHERE rollno=?);";
+    connection.query(query, [req.query.rollno,req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  });
+
+  app.get('/count', (req, res) => {    
+               
+    const query = "SELECT COUNT(courses) FROM Courses WHERE dept_name=(SELECT dept_name FROM Profiles WHERE rollno=?) AND sem=(SELECT sem FROM Profiles WHERE rollno=?);";
+    connection.query(query, [req.query.rollno,req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  });
   /*app.post('/login', (req, res) => {               // use for all query just change /login!!!
   
     const query = "INSERT INTO users (username,email) VALUES (?,?);";
