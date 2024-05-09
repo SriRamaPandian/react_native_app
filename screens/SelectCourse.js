@@ -10,9 +10,10 @@ const SelectCourse = ({ navigation }) => {
   const buttons = [];
   const [data, setData] = useState('');
   const [isLoading, setLoading] = useState(true);
-  const [isPressed, setisPressed] = useState(false);
+  const isPressed = [];
   const mulcourse = [];
   const cname = [];
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +27,6 @@ const SelectCourse = ({ navigation }) => {
         );
         setData(response.data);
         setLoading(false);
-        setisPressed([...isPressed, false]);
       } 
       catch (error) {
         console.error('Error fetching data:', error);
@@ -34,26 +34,27 @@ const SelectCourse = ({ navigation }) => {
     };
       fetchData();
   }, []);
-  
+
   for( let i = 0;i < data.length; i++){
+    isPressed.push(false);
     cname.push(data ? Object.values(data[i]) : []);
     buttons.push(
-      <TouchableOpacity className={ isPressed ?'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25] border-4 border-lime-400' : 'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25]'}
+      <TouchableOpacity className={ isPressed[i] ? 'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25] border-4 ' : 'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25]'}
       key={i}
       onPress={() =>{
-        setisPressed(!isPressed);
-        if(isPressed){
-          mulcourse.push(cname);
-          console.log(isPressed);
+        isPressed[i] = !isPressed[i];
+        if(isPressed[i]){
+          mulcourse.push(cname[i]);
+          console.log(isPressed[i]);
           console.log(mulcourse);
         }
         else{
-          mulcourse.pop(cname);
-          console.log(isPressed);
+          mulcourse.splice(mulcourse.indexOf(cname[i]),1);
+          console.log(isPressed[i]);
           console.log(mulcourse);
         }}
          } >
-        <Text className='text-base text-center font-bold'>{cname}</Text>
+        <Text className='text-base text-center font-bold'>{cname[i]}</Text>
       </TouchableOpacity>
     )
   };
@@ -72,9 +73,12 @@ const SelectCourse = ({ navigation }) => {
       Alert.alert('INFO', 'Please select atleast 3 courses');
     }
     else{
+      const arr = mulcourse.flat();
+      //const arraystring = "'" + arr.join("','") + "'";
+      console.log(arr);
       try {
         const response = await axios.post('http://192.168.166.200:3000/mulcourse', {
-          mulcourse,
+          arr,
           rollno,
         });
         

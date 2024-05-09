@@ -17,7 +17,7 @@ const FinalLogin = ({ navigation }) => {
         <View className='justify-center items-center content-end h-[200]'>
           <TouchableOpacity
               className='w-1/2 mb-[80] p-[20] border bg-white rounded-full text-black justify-center items-center bg-cyan-400'
-              onPress={() => navigation.navigate("Login")}>
+              onPress={() => navigation.navigate("Main")}>
             <Text>Next</Text>
           </TouchableOpacity>
         </View>

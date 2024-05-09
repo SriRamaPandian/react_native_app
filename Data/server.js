@@ -44,22 +44,22 @@ const connection = mysql.createConnection({
       if (error) {
         res.status(500).json({ error: error.message });
       } else {
-        console.log(results);
         res.json(results);
       }
     });
   });
 
   app.post('/mulcourse', (req, res) => {
-  
-    const query = "INSERT INTO Profiles (courses) VALUES (?) WHERE rollno = ?;";
+    const a = req.body.arr;
+    const query = "UPDATE Profiles SET courses = JSON_ARRAY(?) WHERE rollno = ?;";
     connection.query(query, [
-      req.body.mulcourse,
+      req.body.arr,
       req.body.rollno,
       ], (error, results) => {
       if (error) {
         res.status(500).json({ error: error.message });
       } else {
+        console.log(a);
         res.json({ message: 'successfully inserted' });
       }
     });
