@@ -12,6 +12,7 @@ const SelectCourse = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [isPressed, setisPressed] = useState(false);
   const mulcourse = [];
+  const cname = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +26,7 @@ const SelectCourse = ({ navigation }) => {
         );
         setData(response.data);
         setLoading(false);
+        setisPressed([...isPressed, false]);
       } 
       catch (error) {
         console.error('Error fetching data:', error);
@@ -33,21 +35,24 @@ const SelectCourse = ({ navigation }) => {
       fetchData();
   }, []);
   
-  const choose = (cname) =>{
-    setisPressed(!isPressed);
-    if(isPressed){
-      mulcourse.push(cname);
-    }
-    else{
-      mulcourse.pop(cname);
-    }
-  };
-  
   for( let i = 0;i < data.length; i++){
-    var cname = data ? Object.values(data[i]) : [];
+    cname.push(data ? Object.values(data[i]) : []);
     buttons.push(
-      <TouchableOpacity className='w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25]'
-      onPress={choose(cname)} >
+      <TouchableOpacity className={ isPressed ?'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25] border-4 border-lime-400' : 'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25]'}
+      key={i}
+      onPress={() =>{
+        setisPressed(!isPressed);
+        if(isPressed){
+          mulcourse.push(cname);
+          console.log(isPressed);
+          console.log(mulcourse);
+        }
+        else{
+          mulcourse.pop(cname);
+          console.log(isPressed);
+          console.log(mulcourse);
+        }}
+         } >
         <Text className='text-base text-center font-bold'>{cname}</Text>
       </TouchableOpacity>
     )
