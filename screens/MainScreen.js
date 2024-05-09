@@ -9,7 +9,7 @@ const LandingScreen = () => {
       className='flex-1 justify-center items-center'
       colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
       <ScrollView>  
-        <View className='container'>
+        <View className='justify-center items-center mt-[50] p-[30] h-[200]'>
           <Text className='text-2x1 font-bold'>
               LANDINGPAGE
           </Text>
