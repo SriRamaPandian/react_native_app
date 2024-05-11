@@ -25,8 +25,8 @@ video_name VARCHAR(255) NOT NULL,
 video_link VARCHAR(255) NOT NULL,
 attachments VARCHAR(255),
 descriptions VARCHAR(255),
-views INT,
-likes INT,
+views INT DEFAULT 0,
+likes INT DEFAULT 0,
 FOREIGN KEY (course_id) 
     REFERENCES Courses(course_id)
     ON DELETE CASCADE

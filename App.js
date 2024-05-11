@@ -8,6 +8,8 @@ import MainScreen from './screens/MainScreen.js';
 import SelectCourse from './screens/SelectCourse.js';
 import FinalLogin from './screens/FinalLogin.js'
 import LoginScreen from './screens/LoginScreen.js';
+import Searchpage from './screens/Searchpage.js';
+import Profilepage from './screens/Profilepage.js';
 
 
 
@@ -35,12 +37,14 @@ return (
 <SafeAreaView className='flex-1'>
   <NavigationContainer>
     <Stack.Navigator 
-    initialRouteName={ true ? "Login" : "Main"}
+    initialRouteName={ false ? "Login" : "Main"}
     screenOptions={{headerShown: false}}>
       <Stack.Screen name="Course" component={SelectCourse}/>
       <Stack.Screen name="Login" component={LoginScreen}/>
       <Stack.Screen name="Final" component={FinalLogin}/>
       <Stack.Screen name="Main" component={MainScreen}/>
+      <Stack.Screen name="Search" component={Searchpage}/>
+      <Stack.Screen name="Profile" component={Profilepage}/>
     </Stack.Navigator>
   </NavigationContainer>
   <StatusBar style="auto" />
