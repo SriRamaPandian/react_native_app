@@ -32,14 +32,14 @@ const SelectCourse = ({ navigation }) => {
         console.error('Error fetching data:', error);
       }
     };
-      fetchData();
+      //fetchData();
   }, []);
 
   for( let i = 0;i < data.length; i++){
     isPressed.push(false);
     cname.push(data ? Object.values(data[i]) : []);
     buttons.push(
-      <TouchableOpacity className={ isPressed[i] ? 'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25] border-4 ' : 'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25]'}
+      <TouchableOpacity className={'w-[135] h-[135] rounded-full justify-center items-center bg-cyan-200 m-[25]'}
       key={i}
       onPress={() =>{
         isPressed[i] = !isPressed[i];
