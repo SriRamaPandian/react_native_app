@@ -32,7 +32,7 @@ const SelectCourse = ({ navigation }) => {
         console.error('Error fetching data:', error);
       }
     };
-      //fetchData();
+      fetchData();
   }, []);
 
   for( let i = 0;i < data.length; i++){

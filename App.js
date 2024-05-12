@@ -4,12 +4,12 @@ import { SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MainScreen from './screens/MainScreen.js';
 import SelectCourse from './screens/SelectCourse.js';
 import FinalLogin from './screens/FinalLogin.js'
 import LoginScreen from './screens/LoginScreen.js';
 import Searchpage from './screens/Searchpage.js';
 import Profilepage from './screens/Profilepage.js';
+import Drawerpage from './screens/Drawerpage.js';
 
 
 
@@ -37,14 +37,15 @@ return (
 <SafeAreaView className='flex-1'>
   <NavigationContainer>
     <Stack.Navigator 
-    initialRouteName={ false ? "Login" : "Main"}
+    initialRouteName={ false ? "Login" : "Drawer"}
     screenOptions={{headerShown: false}}>
       <Stack.Screen name="Course" component={SelectCourse}/>
       <Stack.Screen name="Login" component={LoginScreen}/>
       <Stack.Screen name="Final" component={FinalLogin}/>
-      <Stack.Screen name="Main" component={MainScreen}/>
+      <Stack.Screen name="Drawer" component={Drawerpage}/>
       <Stack.Screen name="Search" component={Searchpage}/>
       <Stack.Screen name="Profile" component={Profilepage}/>
+      
     </Stack.Navigator>
   </NavigationContainer>
   <StatusBar style="auto" />
