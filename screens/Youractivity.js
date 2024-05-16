@@ -1,18 +1,47 @@
-import React, {useState} from 'react';
-import { View , Text , TouchableOpacity , ScrollView , TextInput , Image } from 'react-native';
+import React, {useState,useContext} from 'react';
+import { View , Text , TouchableOpacity , ScrollView , TextInput , Image , Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import axios from 'axios';
+import { Video } from 'expo-av';
+import { MyContext } from './Drawerpage';
 
 
 const Youractivity = ({ navigation }) => {
+  const { roll } = useContext(MyContext);
   const [ispressed, setispressed] = useState(false);
   const [vname, setvname] = useState('');
   const [description, setdescription] = useState('');
   const [image, setimage] = useState('');
   const [video, setvideo] = useState('');
+  const [cname, setcname] = useState('');
+  const [imguri,setimguri] = useState('');
+  const [viduri,setviduri] = useState('');
 
+  let inserturi = async () => {
+    try {
+      const response = await axios.post('http://192.168.166.200:3000/uri', {
+        cname,
+        roll,
+        vname,
+        viduri,
+        imguri,
+        description,
+      });
+      
+      if (response.data.message === 'Uri inserted successfully') {
+        Alert.alert('Success', 'New Video Added successfully.');
+        navigation.navigate("Main");
+        setispressed(!ispressed)
+      }
+    } catch (error) {
+      console.error('Error occurred during insering uri:', error.message);
+      Alert.alert('ERROR', 'Error');
+    }
+    
+  };
 
   let openVideoPickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -41,7 +70,8 @@ const Youractivity = ({ navigation }) => {
       let fileName = vname;
   
       // Copy the video file to the folder
-      let destinationUri = folderUri + '/' + fileName;
+      let destinationUri = folderUri + '/' + cname + fileName;
+      setviduri(destinationUri);
       await FileSystem.copyAsync({ from: videoUri, to: destinationUri });
   
       console.log('Video saved to folder:', destinationUri);
@@ -76,7 +106,8 @@ const Youractivity = ({ navigation }) => {
       let fileName = vname;
   
       // Copy the video file to the folder
-      let destinationUri = folderUri + '/' + fileName;
+      let destinationUri = folderUri + '/' + cname + fileName;
+      setimguri(destinationUri);
       await FileSystem.copyAsync({ from: imageUri, to: destinationUri });
   
       console.log('Image saved to folder:', destinationUri);
@@ -93,7 +124,7 @@ const Youractivity = ({ navigation }) => {
       <ScrollView>  
         <View className='flex-row items-center mt-[60] p-[40]'>
           <Text className='text-2xl font-bold pr-[120]'>
-                Uploaded Videos:
+                Uploaded Videos:{roll}
           </Text>
           <AntDesign.Button name="pluscircleo" size={30} color="#000" onPress={() => setispressed(!ispressed)} backgroundColor="transparent"/>
         </View>
@@ -124,6 +155,17 @@ const Youractivity = ({ navigation }) => {
             />
           </View>
           <View>
+            <Text className='text-xl font-bold pt-[30]'>Enter Course-id:</Text>
+            <Text className='text-xs pt-[10]'>LIKE:"CSE-HS6151,ECE-HS5151,MECH-HS5151"</Text>
+            <TextInput
+              className='w-full my-[10] pr-[100] border-b-2 border-black text-black'
+              placeholder=""
+              placeholderTextColor={'#000000'}
+              onChangeText={text => setcname(text)}
+              value={cname}
+            />
+          </View>
+          <View>
             <Text className='text-xl font-bold pt-[30]'>Insert attachment:</Text>
             <TouchableOpacity
               className='p-[10] m-[10] border text-black justify-center items-center bg-white'
@@ -139,14 +181,14 @@ const Youractivity = ({ navigation }) => {
               onPress={openVideoPickerAsync}>
             <Text>Insert</Text>
             </TouchableOpacity>
-            {video?<Image source={{uri: video}} className='w-[200] h-[200]'/>:''}
+            {video?<Video source={{uri: video}} className='w-[270] h-[150]' useNativeControls={true} isLooping={false} shouldPlay={true}/>:''}
           </View>
         </View>
         :''}
         <View className='justify-center items-center content-end h-[200]'>
           <TouchableOpacity
               className='w-1/2 mb-[80] p-[20] border bg-white rounded-full text-black justify-center items-center bg-cyan-400'
-              onPress={() => navigation.navigate("Main")}>
+              onPress={inserturi}>
             <Text>Next</Text>
           </TouchableOpacity>
         </View>

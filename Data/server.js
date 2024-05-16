@@ -65,6 +65,24 @@ const connection = mysql.createConnection({
     });
   });
 
+  app.post('/uri', (req, res) => {
+    const query = "INSERT INTO Videos (course_id,rollno,video_name,video_link,attachments,descriptions) VALUES (?,?,?,?,?,?)";
+    connection.query(query, [  
+      req.body.cname,
+      req.body.roll,
+      req.body.vname,
+      req.body.viduri,
+      req.body.imguri,
+      req.body.description,
+      ], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json({ message: 'Uri inserted successfully' });
+      }
+    });
+  });
+
   /*app.post('/login', (req, res) => {               // use for all query just change /login!!!
   
     const query = "INSERT INTO users (username,email) VALUES (?,?);";
