@@ -1,9 +1,13 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { View , Text , TouchableOpacity , ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { MyContext } from './Drawerpage';
 
 
 const Watchlater = ({ navigation }) => {
+  const { roll } = useContext(MyContext);
+
+
   return (
     <LinearGradient 
       className='flex-1'
@@ -11,7 +15,7 @@ const Watchlater = ({ navigation }) => {
       <ScrollView>  
         <View className='justify-center items-center mt-[50] p-[30] h-[200]'>
           <Text className='text-2xl font-bold'>
-            Watchlater
+            Watchlater{roll}
           </Text>
         </View>
         <View className='justify-center items-center content-end h-[200]'>

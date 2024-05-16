@@ -1,24 +1,22 @@
-import React, { useEffect , useState } from 'react';
+import React, { useContext, useEffect , useState } from 'react';
 import { View , Text , ScrollView , TextInput , TouchableOpacity , SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRoute } from '@react-navigation/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Entypo from '@expo/vector-icons/Entypo';
 import axios from 'axios';
 import Searchpage from '../screens/Searchpage';
 import Profilepage from '../screens/Profilepage';
+import { MyContext } from './Drawerpage';
 
 const Stack = createNativeStackNavigator();
 
 const MainScreen = ({ navigation }) => {
-  const route = useRoute();
-  const { rollno } = route.params || {};
+  const { roll } = useContext(MyContext);
   const [data, setData] = useState('');
   const [isLoading, setLoading] = useState(true);
   const [search, setsearch] = useState('');
-
 
   /*useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +56,7 @@ const MainScreen = ({ navigation }) => {
               value={search}
             />
         </View>
-        <Text>{search}</Text>
+        <Text>{search}{roll}</Text>
       </View>  
     </ScrollView>
   </LinearGradient>

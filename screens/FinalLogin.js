@@ -1,9 +1,14 @@
 import React from 'react';
+import { useRoute } from '@react-navigation/native';
 import { View , Text , TouchableOpacity , ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
 const FinalLogin = ({ navigation }) => {
+  const route = useRoute();
+  const { rollno } = route.params || {};
+
+
   return (
     <LinearGradient 
       className='flex-1'
@@ -17,7 +22,7 @@ const FinalLogin = ({ navigation }) => {
         <View className='justify-center items-center content-end h-[200]'>
           <TouchableOpacity
               className='w-1/2 mb-[80] p-[20] border bg-white rounded-full text-black justify-center items-center bg-cyan-400'
-              onPress={() => navigation.navigate("Main")}>
+              onPress={() => navigation.navigate("Drawer",{rollno})}>
             <Text>Next</Text>
           </TouchableOpacity>
         </View>
