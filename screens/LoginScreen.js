@@ -32,6 +32,7 @@ const LoginScreen = ({ navigation }) => {
       
       if (response.data.message === 'User registered successfully') {
         await AsyncStorage.setItem('isLoggedIn','true');
+        await AsyncStorage.setItem('key',rollno);
         Alert.alert('Success', 'Account created successfully.');
         navigation.navigate("Course",{rollno});
         

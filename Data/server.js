@@ -83,6 +83,83 @@ const connection = mysql.createConnection({
     });
   });
 
+  app.get('/uploadedvideos', (req, res) => {    
+               
+    const query = "SELECT video_name,video_link,views,likes FROM videos WHERE rollno = ?;";
+    connection.query(query, [req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+
+  app.get('/main1', (req, res) => {    
+               
+    const query = "SELECT c.courses,v.video_name,v.video_link,v.video_id from courses c,profiles p,Videos v where JSON_CONTAINS(p.courses,CONCAT('\"',c.courses,'\"')) <> \"NULL\" AND p.rollno=? AND c.sem=(SELECT sem FROM profiles WHERE rollno = ?) AND c.dept_name=(SELECT dept_name FROM profiles WHERE rollno = ?) AND v.course_id=c.course_id;";
+    connection.query(query, [req.query.rollno,req.query.rollno,req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+
+  app.get('/main2', (req, res) => {    
+               
+    const query = "SELECT c.courses,v.video_name,v.video_link,v.video_id from courses c,profiles p,Videos v where JSON_CONTAINS(p.courses,CONCAT('\"',c.courses,'\"')) = \"NULL\" AND p.rollno=? AND c.sem=(SELECT sem FROM profiles WHERE rollno = ?) AND c.dept_name=(SELECT dept_name FROM profiles WHERE rollno = ?) AND v.course_id=c.course_id;";
+    connection.query(query, [req.query.rollno,req.query.rollno,req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+
+  app.get('/search', (req, res) => {    
+    const searchterm = req.query.search;
+    console.log(searchterm);           
+    const query = "SELECT v.video_id,v.video_name,v.video_link FROM Videos v JOIN Courses c ON v.course_id=c.course_id WHERE v.video_link LIKE ? OR c.courses LIKE ? ORDER BY v.video_name;";
+    const searchpattern = '%' + searchterm + '%';
+    console.log(searchpattern); 
+    connection.query(query, [searchpattern,searchpattern], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
+        console.log(results);
+      }
+    });
+  });
+
+  app.get('/display1', (req, res) => {    
+               
+    const query = "SELECT video_link,video_name,attachments,descriptions,views,likes FROM Videos WHERE video_id = ?;";
+    connection.query(query, [req.query.id], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
+        console.log(results);
+      }
+    });
+  });
+
+  app.get('/display2', (req, res) => {    
+               
+    const query = "SELECT video_link,video_name,video_id FROM Videos WHERE video_id <> ? AND course_id IN (SELECT c.course_id FROM Courses c,Profiles p WHERE p.dept_name = c.dept_name AND p.rollno=?);";
+    connection.query(query, [req.query.id,req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
+        console.log(results);
+      }
+    });
+  });
   /*app.post('/login', (req, res) => {               // use for all query just change /login!!!
   
     const query = "INSERT INTO users (username,email) VALUES (?,?);";
