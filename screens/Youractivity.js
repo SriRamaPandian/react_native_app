@@ -1,4 +1,4 @@
-import React, {useState,useContext} from 'react';
+import React, {useState,useContext,useEffect} from 'react';
 import { View , Text , TouchableOpacity , ScrollView , TextInput , Image , Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -12,6 +12,8 @@ import { MyContext } from './Drawerpage';
 const Youractivity = ({ navigation }) => {
   const { roll } = useContext(MyContext);
   const [ispressed, setispressed] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState('');
   const [vname, setvname] = useState('');
   const [description, setdescription] = useState('');
   const [image, setimage] = useState('');
@@ -19,6 +21,8 @@ const Youractivity = ({ navigation }) => {
   const [cname, setcname] = useState('');
   const [imguri,setimguri] = useState('');
   const [viduri,setviduri] = useState('');
+  const uploaded = [];
+
 
   let inserturi = async () => {
     try {
@@ -33,8 +37,8 @@ const Youractivity = ({ navigation }) => {
       
       if (response.data.message === 'Uri inserted successfully') {
         Alert.alert('Success', 'New Video Added successfully.');
-        navigation.navigate("Main");
-        setispressed(!ispressed)
+        //navigation.navigate("Main");
+        setispressed(!ispressed);
       }
     } catch (error) {
       console.error('Error occurred during insering uri:', error.message);
@@ -116,23 +120,70 @@ const Youractivity = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    const uploadedvideos = async () =>{
+      try {
+        const response = await axios.get('http://192.168.166.200:3000/uploadedvideos',
+          {
+            params:{
+              rollno: roll
+            }
+          }
+        );
+        setData(response.data);
+        setLoading(false);
+      } 
+      catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    uploadedvideos();
+  }, []);
+
+  if (isLoading) {
+    return (
+    <LinearGradient 
+      className='flex-1'
+      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+    </LinearGradient>
+    );
+  };
+
+  for( let i = 0;i < data.length; i++){
+    uploaded.push(
+      <View key={i} className='mx-[7]'>
+        <Text className='p-[7] text-xl'>{data[i].video_name}:</Text>
+        <View className='flex-row mt-[7]'>
+          <Video source={{uri: data[i].video_link}} className='w-[250] h-[150] border-4 rounded-md' useNativeControls={true} isLooping={false} shouldPlay={false} />
+          <View className='flex-col p-[25]'>
+            <Text className='text-xl font-bold'>LIKES:{data[i].likes}</Text>
+            <Text className='text-xl font-bold mt-[10]'>VIEWS:{data[i].views}</Text>
+          </View>
+        </View>
+      </View>
+    )
+  };
+  /*console.log(data[0].likes);
+  console.log(data[0].video_link);
+  console.log(data[0].video_name);
+  console.log(data[0].views);*/
 
   return (
     <LinearGradient 
       className='flex-1'
       colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
       <ScrollView>  
-        <View className='flex-row items-center mt-[60] p-[40]'>
+        <View className='flex-row items-center mt-[30] p-[10]'>
           <Text className='text-2xl font-bold pr-[120]'>
-                Uploaded Videos:{roll}
+                Uploaded Videos:
           </Text>
-          <AntDesign.Button name="pluscircleo" size={30} color="#000" onPress={() => setispressed(!ispressed)} backgroundColor="transparent"/>
+          <AntDesign.Button name="pluscircleo" size={40} color="#000" onPress={() => setispressed(!ispressed)} backgroundColor="transparent"/>
         </View>
-        <View>
-
+        <View className='flex-col'>
+          {uploaded}
         </View>
         {ispressed?
-        <View className='items-start mt-[60] p-[40]'>
+        <View className='items-start mt-[60] p-[10]'>
           <Text className='text-2xl font-bold'>Upload New Videos:</Text>
           <View>
             <Text className='text-xl font-bold pt-[30]'>Enter video name:</Text>
@@ -172,7 +223,7 @@ const Youractivity = ({ navigation }) => {
               onPress={openImagePickerAsync}>
             <Text>Insert</Text>
             </TouchableOpacity>
-            {image?<Image source={{uri: image}} className='w-[200] h-[200]'/>:''}
+            {image?<Image source={{uri: image}} className='w-[200] h-[200] rounded-md'/>:''}
           </View>
           <View>
             <Text className='text-xl font-bold pt-[30]'>Insert Video:</Text>
@@ -181,13 +232,13 @@ const Youractivity = ({ navigation }) => {
               onPress={openVideoPickerAsync}>
             <Text>Insert</Text>
             </TouchableOpacity>
-            {video?<Video source={{uri: video}} className='w-[270] h-[150]' useNativeControls={true} isLooping={false} shouldPlay={true}/>:''}
+            {video?<Video source={{uri: video}} className='w-[270] h-[150] border-4 rounded-md' useNativeControls={true} isLooping={false} shouldPlay={false}/>:''}
           </View>
         </View>
         :''}
         <View className='justify-center items-center content-end h-[200]'>
           <TouchableOpacity
-              className='w-1/2 mb-[80] p-[20] border bg-white rounded-full text-black justify-center items-center bg-cyan-400'
+              className='w-1/2 mb-[80] p-[20] border rounded-full text-black justify-center items-center bg-cyan-400'
               onPress={inserturi}>
             <Text>Next</Text>
           </TouchableOpacity>
