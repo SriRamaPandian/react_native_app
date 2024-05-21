@@ -37,7 +37,7 @@ const Searchpage = ({ navigation }) => {
     return (
     <LinearGradient 
       className='flex-1'
-      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+      colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
     </LinearGradient>
     );
   };
@@ -56,14 +56,10 @@ const Searchpage = ({ navigation }) => {
     }
   }
 
-  const res = [<View className='justify-center items-center'>
-    <Text className='font-bold text-2xl items-center p-[50]'>!!!No Result Found!!!</Text>
-  </View>]
-
   return (
     <LinearGradient 
       className='flex-1'
-      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+      colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
       <ScrollView>  
         <View className='mt-[50]'>
           <Text className='font-bold text-3xl px-[30] py-[7]'>Your search result:</Text>

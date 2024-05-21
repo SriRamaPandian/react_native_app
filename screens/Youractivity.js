@@ -1,5 +1,5 @@
 import React, {useState,useContext,useEffect} from 'react';
-import { View , Text , TouchableOpacity , ScrollView , TextInput , Image , Alert } from 'react-native';
+import { View , Text , TouchableOpacity , ScrollView , TextInput , Image , Alert , RefreshControl} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import * as ImagePicker from 'expo-image-picker';
@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 import { Video } from 'expo-av';
 import { MyContext } from './Drawerpage';
+import * as Updates from 'expo-updates';
 
 
 const Youractivity = ({ navigation }) => {
@@ -22,7 +23,22 @@ const Youractivity = ({ navigation }) => {
   const [imguri,setimguri] = useState('');
   const [viduri,setviduri] = useState('');
   const uploaded = [];
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    setRefreshKey(refreshKey + 1);
+    setimage('');
+    setvideo('');
+    setcname('');
+    setvname('');
+    setdescription('');
+    // Perform your data fetching or other refreshing tasks here
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000); // Simulate a network request
+  };
 
   let inserturi = async () => {
     try {
@@ -42,7 +58,7 @@ const Youractivity = ({ navigation }) => {
       }
     } catch (error) {
       console.error('Error occurred during insering uri:', error.message);
-      Alert.alert('ERROR', 'Error');
+      Alert.alert('ERROR', 'Invalid Credential');
     }
     
   };
@@ -138,16 +154,17 @@ const Youractivity = ({ navigation }) => {
       }
     };
     uploadedvideos();
-  }, []);
+  }, [refreshKey]);
 
   if (isLoading) {
     return (
     <LinearGradient 
       className='flex-1'
-      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+      colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
     </LinearGradient>
     );
-  };
+  }
+  
 
   for( let i = 0;i < data.length; i++){
     uploaded.push(
@@ -171,15 +188,17 @@ const Youractivity = ({ navigation }) => {
   return (
     <LinearGradient 
       className='flex-1'
-      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
-      <ScrollView>  
+      colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
+      <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>  
         <View className='flex-row items-center mt-[30] p-[10]'>
           <Text className='text-2xl font-bold pr-[120]'>
                 Uploaded Videos:
           </Text>
           <AntDesign.Button name="pluscircleo" size={40} color="#000" onPress={() => setispressed(!ispressed)} backgroundColor="transparent"/>
         </View>
-        <View className='flex-col'>
+        <View className='flex-col mb-[30]'>
           {uploaded}
         </View>
         {ispressed?
@@ -234,15 +253,15 @@ const Youractivity = ({ navigation }) => {
             </TouchableOpacity>
             {video?<Video source={{uri: video}} className='w-[270] h-[150] border-4 rounded-md' useNativeControls={true} isLooping={false} shouldPlay={false}/>:''}
           </View>
+          <View className='justify-center items-center ml-[150] h-[200]'>
+            <TouchableOpacity
+                className='w-1/2 mb-[80] p-[20] border rounded-full text-black justify-center items-center bg-cyan-400'
+                onPress={inserturi}>
+              <Text>Submit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         :''}
-        <View className='justify-center items-center content-end h-[200]'>
-          <TouchableOpacity
-              className='w-1/2 mb-[80] p-[20] border rounded-full text-black justify-center items-center bg-cyan-400'
-              onPress={inserturi}>
-            <Text>Next</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
     </LinearGradient>
   )

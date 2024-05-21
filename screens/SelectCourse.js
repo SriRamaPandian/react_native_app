@@ -63,7 +63,7 @@ const SelectCourse = ({ navigation }) => {
     return (
     <LinearGradient 
       className='flex-1'
-      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+      colors={['#1d9bb2','#ffffff']}>
     </LinearGradient>
     );
   }
@@ -83,7 +83,7 @@ const SelectCourse = ({ navigation }) => {
         });
         
         if (response.data.message === 'successfully inserted') {
-          navigation.navigate("Final",{rollno}); 
+          navigation.replace("Final",{rollno}); 
         }
       } 
       catch (error) {
@@ -95,7 +95,7 @@ const SelectCourse = ({ navigation }) => {
   return (
   <LinearGradient 
     className='flex-1'
-    colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+    colors={['#1d9bb2','#ffffff']}>
     <ScrollView>  
       <View className='justify-center items-center mt-[50] p-[30] h-[200]'>
         <Text className='text-3xl text-center font-bold'>Select the Courses that you needed the most</Text>

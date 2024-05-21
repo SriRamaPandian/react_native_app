@@ -37,7 +37,7 @@ return (
 <SafeAreaView className='flex-1'>
   <NavigationContainer>
     <Stack.Navigator 
-    initialRouteName={false ? "Login" : "Drawer"}
+    initialRouteName={true ? "Drawer" : "Login"}
     screenOptions={{headerShown: false}}>
       <Stack.Screen name="Course" component={SelectCourse}/>
       <Stack.Screen name="Login" component={LoginScreen}/>

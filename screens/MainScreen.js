@@ -1,5 +1,5 @@
 import React, { useContext, useEffect , useState } from 'react';
-import { View , Text , ScrollView , TextInput , TouchableOpacity , SafeAreaView } from 'react-native';
+import { View , Text , ScrollView , TextInput , TouchableOpacity , RefreshControl } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +8,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import axios from 'axios';
 import { MyContext } from './Drawerpage';
 import { Video } from 'expo-av';
+import * as Updates from 'expo-updates';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,9 +25,22 @@ const MainScreen = ({ navigation }) => {
   const SelectCourse2 = [];
   const scourse2 = [];
   const coursetag2 = [];
-  const empty = [];
+  const [refreshKey, setRefreshKey] = useState(0);
   
   
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setsearch('');
+    setRefreshKey(refreshKey + 1);
+    // Perform your data fetching or other refreshing tasks here
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000); // Simulate a network request
+  };
+
+
 
   useEffect(() => {
     const fetchDataout1 = async () => {
@@ -39,7 +53,7 @@ const MainScreen = ({ navigation }) => {
           }
         );
         setDataout1(response.data);
-        setLoading1(false);
+        
       } 
       catch (error) {
         console.error('Error fetching data:', error);
@@ -56,7 +70,7 @@ const MainScreen = ({ navigation }) => {
           }
         );
         setDataout2(response.data);
-        setLoading2(false);
+        
       } 
       catch (error) {
         console.error('Error fetching data:', error);
@@ -65,7 +79,9 @@ const MainScreen = ({ navigation }) => {
     
       fetchDataout1();
       fetchDataout2();
-  }, [roll]);
+      setLoading2(false);
+      setLoading1(false);
+  }, [refreshKey || roll]);
 
   //console.log(dataout1,dataout2);
 
@@ -140,16 +156,21 @@ const MainScreen = ({ navigation }) => {
     return (
     <LinearGradient 
       className='flex-1'
-      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+      colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
     </LinearGradient>
     );
-  };
+  }
+  
 
   return (
   <LinearGradient 
     className='flex-1'
-    colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
-    <ScrollView className='flex-col'>
+    colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
+    <ScrollView 
+    className='flex-col'
+    refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       <View className='justify-evenly items-center mt-[30]'>
         <View className='flex-row justify-evenly items-center mt-[10] content-center bg-white border-2 border-black rounded-full px-5'>
           <FontAwesome name="search" size={23} color="#000" />

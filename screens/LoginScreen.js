@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
         await AsyncStorage.setItem('isLoggedIn','true');
         await AsyncStorage.setItem('key',rollno);
         Alert.alert('Success', 'Account created successfully.');
-        navigation.navigate("Course",{rollno});
+        navigation.replace("Course",{rollno});
         
         
       }
@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (  
     <LinearGradient
-       colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+       colors={['#1d9bb2','#ffffff']}>
        <ScrollView>
           <View className='container justify-center items-center h-[1200]'>
             <Image
@@ -119,7 +119,7 @@ const LoginScreen = ({ navigation }) => {
               </Picker>)}
             </View>
             <TouchableOpacity
-            className='w-1/2 mb-[30] p-[20] border bg-white rounded-full text-black justify-center items-center bg-cyan-400'  
+            className='w-1/2 mb-[30] p-[20] border rounded-full text-black justify-center items-center bg-cyan-400'  
             onPress={handleRegistration} >
               <Text>CREATE ACCOUNT</Text>
             </TouchableOpacity>
