@@ -31,7 +31,7 @@ return (
         <Drawer.Navigator 
         initialRouteName="Main"
         screenOptions={
-        {headerTitleStyle: {fontWeight: 'bold',fontSize: 30},headerStyle:{backgroundColor:'#1d9bb2'}}}>
+        {headerTitleStyle: {fontWeight: 'bold',fontSize: 30},headerStyle:{backgroundColor:'#4682b4'}}}>
         <Drawer.Screen
         name="Main"
         component={MainScreen}

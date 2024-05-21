@@ -50,7 +50,8 @@
     "react-native-web": "~0.19.6",
     "react-navigation": "^5.0.0",
     "ws": "^8.16.0",
-    "expo-av": "14.0.5"
+    "expo-av": "14.0.5",
+    "expo-updates": "~0.25.14"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

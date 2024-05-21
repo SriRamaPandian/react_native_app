@@ -50,7 +50,6 @@ const connection = mysql.createConnection({
   });
 
   app.post('/mulcourse', (req, res) => {
-    const a = req.body.arr;
     const query = "UPDATE Profiles SET courses = JSON_ARRAY(?) WHERE rollno = ?;";
     connection.query(query, [
       req.body.arr,
@@ -59,7 +58,6 @@ const connection = mysql.createConnection({
       if (error) {
         res.status(500).json({ error: error.message });
       } else {
-        console.log(a);
         res.json({ message: 'successfully inserted' });
       }
     });
@@ -120,17 +118,25 @@ const connection = mysql.createConnection({
   });
 
   app.get('/search', (req, res) => {    
-    const searchterm = req.query.search;
-    console.log(searchterm);           
+    const searchterm = req.query.search;         
     const query = "SELECT v.video_id,v.video_name,v.video_link FROM Videos v JOIN Courses c ON v.course_id=c.course_id WHERE v.video_link LIKE ? OR c.courses LIKE ? ORDER BY v.video_name;";
     const searchpattern = '%' + searchterm + '%';
-    console.log(searchpattern); 
     connection.query(query, [searchpattern,searchpattern], (error, results) => {
       if (error) {
         res.status(500).json({ error: error.message });
       } else {
         res.json(results);
-        console.log(results);
+      }
+    });
+  });
+
+  app.get('/profile', (req, res) => {               
+    const query = "SELECT SUBSTRING(username, 1, 1) AS first_letter, username, email,dept_name,years,courses FROM Profiles WHERE rollno = ?;";
+    connection.query(query, [req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
       }
     });
   });
@@ -143,7 +149,6 @@ const connection = mysql.createConnection({
         res.status(500).json({ error: error.message });
       } else {
         res.json(results);
-        console.log(results);
       }
     });
   });
@@ -156,10 +161,103 @@ const connection = mysql.createConnection({
         res.status(500).json({ error: error.message });
       } else {
         res.json(results);
-        console.log(results);
       }
     });
   });
+
+  app.get('/final', (req, res) => {               
+    const query = "SELECT username FROM Profiles WHERE rollno=?;";
+    connection.query(query, [req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+
+  app.post('/liked', (req, res) => {
+    const query = "UPDATE Videos SET likes = liked(?) WHERE video_id = ?";
+    connection.query(query, [
+      req.body.id,
+      req.body.id,
+      ], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json({ message: 'liked' });
+      }
+    });
+  });
+
+  app.post('/notliked', (req, res) => {
+    const query = "UPDATE Videos SET likes = notliked(?) WHERE video_id = ?";
+    connection.query(query, [
+      req.body.id,
+      req.body.id,
+      ], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json({ message: 'notliked' });
+      }
+    });
+  });
+
+  app.post('/views', (req, res) => {
+    const query = "UPDATE Videos SET views = views(?) WHERE video_id = ?";
+    connection.query(query, [
+      req.body.id,
+      req.body.id,
+      ], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json({ message: 'views' });
+      }
+    });
+  });
+
+  app.post('/watchlater', (req, res) => {
+    const query = "CALL watchlater(?,?);";
+    connection.query(query, [
+      req.body.id,
+      req.body.roll,
+      ], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json({ message: 'successfully added in watchlater' });
+      }
+    });
+  });
+
+  app.post('/feedback', (req, res) => {
+    const query = "CALL feedback(?,?,?);";
+    connection.query(query, [
+      req.body.id,
+      req.body.roll,
+      req.body.FeedBack,
+      ], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json({ message: 'successfully added feedback' });
+      }
+    });
+  });
+
+  app.get('/drawer/watchlater', (req, res) => {            
+    const query = "SELECT v.video_id,v.video_name,v.video_link FROM Videos v JOIN WatchLater w ON v.video_id=w.video_id WHERE w.rollno = ? ORDER BY v.video_name;";
+    connection.query(query, [req.query.rollno], (error, results) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+  
   /*app.post('/login', (req, res) => {               // use for all query just change /login!!!
   
     const query = "INSERT INTO users (username,email) VALUES (?,?);";

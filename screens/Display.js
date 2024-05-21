@@ -1,10 +1,12 @@
 import React, { useEffect , useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { View , Text , TouchableOpacity , ScrollView , Image , TextInput} from 'react-native';
+import { View , Text , TouchableOpacity , ScrollView , Image , TextInput , RefreshControl , Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import { Video } from 'expo-av';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Watchlater from './Watchlater';
 
 
 const Display = ({ navigation }) => {
@@ -14,8 +16,25 @@ const Display = ({ navigation }) => {
   const [isLoading2, setLoading2] = useState(true);
   const [data1, setData1] = useState('');
   const [data2, setData2] = useState('');
-  const [FeedBack,setFeedBack] = useState(null);
+  const [FeedBack,setFeedBack] = useState('');
   const svideo = [];
+  const [islike, setislike] = useState(false);
+  const [view, setview] = useState(true);
+  const [watch, setwatch] = useState(true);
+  const [feed, setfeed] = useState(true);
+  
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setislike(false);
+    setRefreshKey(refreshKey + 1);
+    // Perform your data fetching or other refreshing tasks here
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000); // Simulate a network request
+  };
 
   useEffect(() => {
     const fetchData1 = async () => {
@@ -55,19 +74,22 @@ const Display = ({ navigation }) => {
 
       fetchData1();
       fetchData2();
-  }, []);
+  }, [refreshKey]);
 
   if(data2.length !== 0){
     for(let i=0 ; i < data2.length;i++){
         const id = data2[i].video_id;
-        svideo.push(
+        const video_link = data2[i].video_link;
+        if(video_link){
+          svideo.push(
             <View key={i} className='flex-col px-[30] py-[10]'>
                 <TouchableOpacity activeOpacity={2} onPress={() => navigation.push("Display",{id,roll})} >
-                  <Video source={{uri: data2[i].video_link}} className='w-[270] h-[150] border-4 rounded-md' useNativeControls={false} isLooping={false} shouldPlay={false}/>
+                  <Video source={{uri: video_link}} className='w-[270] h-[150] border-4 rounded-md' useNativeControls={false} isLooping={false} shouldPlay={false}/>
                 </TouchableOpacity>
                 <Text className='text-xl p-[10]'>{data2[i].video_name}</Text>
             </View>
         )
+        }
       }
   }
 
@@ -75,31 +97,128 @@ const Display = ({ navigation }) => {
     return (
     <LinearGradient 
       className='flex-1'
-      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
+      colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
     </LinearGradient>
     );
   };
+
+  const liked = async () => {
+    try {
+      const response = await axios.post('http://192.168.166.200:3000/liked',
+        {id}
+      );
+      if (response.data.message === 'liked') {
+        setislike(!islike);
+      }
+    } 
+    catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  const notliked = async () => {
+    try {
+      const response = await axios.post('http://192.168.166.200:3000/notliked',
+        {id}
+      );
+      if (response.data.message === 'notliked') {
+        setislike(!islike);
+      }
+    } 
+    catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  const views = async () => {
+    if(view){
+      try {
+        const response = await axios.post('http://192.168.166.200:3000/views',
+          {id}
+        );
+        if (response.data.message === 'views') {
+          setview(false);
+        }
+      } 
+      catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  }
+
+  const watchlater = async () => {
+    if(watch){
+      try {
+        const response = await axios.post('http://192.168.166.200:3000/watchlater',
+          {
+            id,
+            roll,
+          }
+        );
+        if (response.data.message === 'successfully added in watchlater') {
+          setwatch(false);
+          Alert.alert('INFO','Video Added to Watch Later');
+        }
+      } 
+      catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  }
+
+  const feedsubmit = async () => {
+    if(feed){
+      try {
+        const response = await axios.post('http://192.168.166.200:3000/feedback',
+          {
+            id,
+            roll,
+            FeedBack,
+          }
+        );
+        if (response.data.message === 'successfully added feedback') {
+          setfeed(false);
+          Alert.alert('INFO','Feedback is submitted');
+        }
+      } 
+      catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  }
 
 
   return (
     <LinearGradient 
       className='flex-1'
-      colors={['#3D52AD','#7091E6','#8697C4','#ADBBDA','#EDE8F5']}>
-      <ScrollView>  
+      colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
+      <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>  
         <View className='p-[20] mt-[30]'>
         <Text className='p-[10] text-3xl font-bold'>{data1[0].video_name}:</Text>
-        <Video source={{uri: data1[0].video_link}} className='w-full h-[210] border-4 rounded-md mr-[20]' useNativeControls={true} isLooping={false} shouldPlay={false}/>
+        <TouchableOpacity activeOpacity={0.97} onPress={views}>
+          <Video source={{uri: data1[0].video_link}} className='w-full h-[210] border-4 rounded-md mr-[20]' useNativeControls={true} isLooping={false} shouldPlay={false}/>
+        </TouchableOpacity>
         <View className='mt-[20] rounded-xl p-3 bg-cyan-300'>
             <Text className='font-bold text-xl'>Description:</Text>
             <Text className='p-[7] ml-[10] text-base'>{data1[0].descriptions}</Text>
         </View>
         <View className='flex-row mt-[30] justify-evenly'>
-            <Text className='text-base p-[10] bg-violet-400 rounded-3xl'>{data1[0].views} Views</Text>
-            <Text className='text-base p-[10] bg-violet-400 rounded-3xl'>{data1[0].likes} Likes</Text>
-            <View className='flex-row justify-center items-center  bg-violet-400 rounded-3xl'>
+            <Text className='text-base p-[20] bg-violet-400 rounded-3xl justify-center items-center'>{data1[0].views} Views</Text>
+            { islike ? 
+            <TouchableOpacity activeOpacity={0.3} className=' p-[10] bg-violet-400 rounded-3xl flex-row justify-center items-center' onPress={notliked}>
+              <Text className='text-base mr-2'>{data1[0].likes} Likes</Text>
+              <AntDesign name='like1' size={30}/>
+            </TouchableOpacity> :
+            <TouchableOpacity activeOpacity={0.3} className=' p-[10] bg-violet-400 rounded-3xl flex-row justify-center items-center' onPress={liked}>
+              <Text className='text-base mr-2'>{data1[0].likes} Likes</Text>
+              <AntDesign name='like2' size={30}/>
+            </TouchableOpacity>}
+            <TouchableOpacity activeOpacity={0.3} className='flex-row justify-center items-center  bg-violet-400 rounded-3xl' onPress={watchlater}>
                 <Text className='text-base p-[10]'>Watchlater</Text>
                 <MaterialIcons name="watch-later" size={40}  />
-            </View>
+            </TouchableOpacity>
         </View>
         <View className='mt-[20] rounded-xl p-3 bg-blue-300'>
             <Text className='font-bold text-xl'>Attachment:</Text>
@@ -118,7 +237,7 @@ const Display = ({ navigation }) => {
                 onChangeText={text => setFeedBack(text)}
                 value={FeedBack}
             />
-            <TouchableOpacity className='flex-row-reverse'>
+            <TouchableOpacity className='flex-row-reverse' onPress={feedsubmit}>
                 <Text className='text-sm p-[7] bg-violet-300 rounded-3xl'>Submit</Text>
             </TouchableOpacity>
         </View>
