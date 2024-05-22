@@ -98,13 +98,13 @@ const SelectCourse = ({ navigation }) => {
     colors={['#1d9bb2','#ffffff']}>
     <ScrollView>  
       <View className='justify-center items-center mt-[50] p-[30] h-[200]'>
-        <Text className='text-3xl text-center font-bold'>Select the Courses that you needed the most</Text>
+        <Text className='text-3xl text-center font-bold'>Select the Courses that you need the most</Text>
       </View>
       <View className='justify-center items-center m-4 flex-wrap flex-row mb-[25]'>
         {buttons}
       </View>
       <View className='justify-center items-center'>
-        <Text className='text-base text-center'>!!!  Select at least 3 courses  !!!</Text>
+        <Text className='text-base text-center'>!!!  Select atleast 3 courses  !!!</Text>
       </View>
       <View className='justify-center items-center content-end h-[200]'>
       <TouchableOpacity

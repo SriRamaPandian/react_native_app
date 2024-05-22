@@ -55,7 +55,7 @@ const Profilepage = ({ navigation }) => {
 
     fetchData();
     
-  }, [refreshKey]);
+  }, [refreshKey || roll]);
 
   
 

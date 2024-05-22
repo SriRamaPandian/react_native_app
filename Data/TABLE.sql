@@ -65,3 +65,13 @@ FOREIGN KEY (rollno)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+INSERT INTO feedback (rollno,video_id,feedback) VALUES (roll,id,feed);
+
+RETURN (SELECT likes FROM videos WHERE video_id=id) + 1;
+
+RETURN (SELECT likes FROM videos WHERE video_id=id) - 1;
+
+RETURN (SELECT views FROM videos WHERE video_id=id) + 1;
+
+INSERT INTO watchlater (rollno,video_id) VALUES (roll,id);
