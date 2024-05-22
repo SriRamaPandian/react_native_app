@@ -28,7 +28,6 @@ const Display = ({ navigation }) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    setislike(false);
     setRefreshKey(refreshKey + 1);
     // Perform your data fetching or other refreshing tasks here
     setTimeout(() => {

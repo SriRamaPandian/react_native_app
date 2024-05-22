@@ -1,5 +1,5 @@
 import React,{ useContext , useEffect , useState } from 'react';
-import { View , Text , TouchableOpacity , ScrollView } from 'react-native';
+import { View , Text , TouchableOpacity , ScrollView , RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MyContext } from './Drawerpage';
 import axios from 'axios';
@@ -11,6 +11,17 @@ const Watchlater = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data,setData] = useState('');
   const result = [];
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setRefreshKey(refreshKey + 1);
+    // Perform your data fetching or other refreshing tasks here
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000); // Simulate a network request
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +42,7 @@ const Watchlater = ({ navigation }) => {
       }
     };
       fetchData();
-  }, []);
+  }, [refreshKey]);
 
   if (isLoading) {
     return (
@@ -60,7 +71,9 @@ const Watchlater = ({ navigation }) => {
     <LinearGradient 
       className='flex-1'
       colors={['#4682b4','#4682b4','#b0e0e6','#b0e0e6']}>
-      <ScrollView>  
+      <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>  
         <View className='mt-[50]'>
           <Text className='font-bold text-3xl px-[30] py-[7]'>Videos that you selected:</Text>
           {result}
