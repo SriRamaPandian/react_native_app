@@ -18,7 +18,7 @@ const SelectCourse = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.166.200:3000/course',
+        const response = await axios.get('http://192.168.155.200:3000/course',
           {
             params:{
               rollno: rollno
@@ -77,7 +77,7 @@ const SelectCourse = ({ navigation }) => {
       //const arraystring = "'" + arr.join("','") + "'";
       console.log(arr);
       try {
-        const response = await axios.post('http://192.168.166.200:3000/mulcourse', {
+        const response = await axios.post('http://192.168.155.200:3000/mulcourse', {
           arr,
           rollno,
         });
@@ -98,13 +98,13 @@ const SelectCourse = ({ navigation }) => {
     colors={['#1d9bb2','#ffffff']}>
     <ScrollView>  
       <View className='justify-center items-center mt-[50] p-[30] h-[200]'>
-        <Text className='text-3xl text-center font-bold'>Select the Courses that you needed the most</Text>
+        <Text className='text-3xl text-center font-bold'>Select the Courses that you need the most</Text>
       </View>
       <View className='justify-center items-center m-4 flex-wrap flex-row mb-[25]'>
         {buttons}
       </View>
       <View className='justify-center items-center'>
-        <Text className='text-base text-center'>!!!  Select at least 3 courses  !!!</Text>
+        <Text className='text-base text-center'>!!!  Select atleast 3 courses  !!!</Text>
       </View>
       <View className='justify-center items-center content-end h-[200]'>
       <TouchableOpacity

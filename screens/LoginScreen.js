@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleRegistration = async () => {
     try {
-      const response = await axios.post('http://192.168.166.200:3000/login', {
+      const response = await axios.post('http://192.168.155.200:3000/login', {
         rollno,
         username,
         email,

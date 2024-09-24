@@ -31,7 +31,7 @@ const Profilepage = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.166.200:3000/profile', {
+        const response = await axios.get('http://192.168.155.200:3000/profile', {
           params: {
             rollno: roll
           }
@@ -55,7 +55,7 @@ const Profilepage = ({ navigation }) => {
 
     fetchData();
     
-  }, [refreshKey]);
+  }, [refreshKey || roll]);
 
   
 
@@ -104,7 +104,7 @@ return (
             {deptNames}
           </Text>
           <Text className='ml-6 text-xl w-4/5 mb-[16] p-[13] border-2 border-black bg-white rounded-3xl text-black text-center'>
-            {years}
+            {years}-Year
           </Text>
         </View>
         <View >
@@ -112,7 +112,7 @@ return (
           YOUR COURSES :
           </Text>
           <View className='ml-8 mt-4 flex-col' >
-          <Text className='text-base'>{courses}</Text></View>
+          <Text className='text-lg'>{courses}</Text></View>
         </View>
       </ScrollView>
     </LinearGradient>

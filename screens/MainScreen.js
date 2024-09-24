@@ -45,7 +45,7 @@ const MainScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchDataout1 = async () => {
       try {
-        const response = await axios.get('http://192.168.166.200:3000/main1',
+        const response = await axios.get('http://192.168.155.200:3000/main1',
           {
             params:{
               rollno: roll
@@ -62,7 +62,7 @@ const MainScreen = ({ navigation }) => {
 
     const fetchDataout2 = async () => {
       try {
-        const response = await axios.get('http://192.168.166.200:3000/main2',
+        const response = await axios.get('http://192.168.155.200:3000/main2',
           {
             params:{
               rollno: roll

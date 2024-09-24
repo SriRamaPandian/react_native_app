@@ -28,7 +28,6 @@ const Display = ({ navigation }) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    setislike(false);
     setRefreshKey(refreshKey + 1);
     // Perform your data fetching or other refreshing tasks here
     setTimeout(() => {
@@ -39,7 +38,7 @@ const Display = ({ navigation }) => {
   useEffect(() => {
     const fetchData1 = async () => {
       try {
-        const response = await axios.get('http://192.168.166.200:3000/display1',
+        const response = await axios.get('http://192.168.155.200:3000/display1',
           {
             params:{
               id: id
@@ -56,7 +55,7 @@ const Display = ({ navigation }) => {
 
     const fetchData2 = async () => {
         try {
-          const response = await axios.get('http://192.168.166.200:3000/display2',
+          const response = await axios.get('http://192.168.155.200:3000/display2',
             {
               params:{
                 id: id,
@@ -104,7 +103,7 @@ const Display = ({ navigation }) => {
 
   const liked = async () => {
     try {
-      const response = await axios.post('http://192.168.166.200:3000/liked',
+      const response = await axios.post('http://192.168.155.200:3000/liked',
         {id}
       );
       if (response.data.message === 'liked') {
@@ -118,7 +117,7 @@ const Display = ({ navigation }) => {
 
   const notliked = async () => {
     try {
-      const response = await axios.post('http://192.168.166.200:3000/notliked',
+      const response = await axios.post('http://192.168.155.200:3000/notliked',
         {id}
       );
       if (response.data.message === 'notliked') {
@@ -133,7 +132,7 @@ const Display = ({ navigation }) => {
   const views = async () => {
     if(view){
       try {
-        const response = await axios.post('http://192.168.166.200:3000/views',
+        const response = await axios.post('http://192.168.155.200:3000/views',
           {id}
         );
         if (response.data.message === 'views') {
@@ -149,7 +148,7 @@ const Display = ({ navigation }) => {
   const watchlater = async () => {
     if(watch){
       try {
-        const response = await axios.post('http://192.168.166.200:3000/watchlater',
+        const response = await axios.post('http://192.168.155.200:3000/watchlater',
           {
             id,
             roll,
@@ -169,7 +168,7 @@ const Display = ({ navigation }) => {
   const feedsubmit = async () => {
     if(feed){
       try {
-        const response = await axios.post('http://192.168.166.200:3000/feedback',
+        const response = await axios.post('http://192.168.155.200:3000/feedback',
           {
             id,
             roll,

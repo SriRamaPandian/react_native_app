@@ -76,7 +76,7 @@ const FinalLogin = ({ navigation }) => {
         </View>
         <View className='justify-center items-center content-end h-[200] mt-8'>
           <TouchableOpacity
-              className='w-1/2 mb-[80] p-[20] border bg-cyan-600 rounded-full text-black justify-center items-center'
+              className='w-1/2 mb-[80] p-[20] border bg-cyan-400 rounded-full text-black justify-center items-center'
               onPress={() => navigation.replace("Drawer",{rollno})}>
             <Text>Next</Text>
           </TouchableOpacity>
