@@ -18,7 +18,7 @@ const SelectCourse = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.166.200:3000/course',
+        const response = await axios.get('http://192.168.155.200:3000/course',
           {
             params:{
               rollno: rollno
@@ -77,7 +77,7 @@ const SelectCourse = ({ navigation }) => {
       //const arraystring = "'" + arr.join("','") + "'";
       console.log(arr);
       try {
-        const response = await axios.post('http://192.168.166.200:3000/mulcourse', {
+        const response = await axios.post('http://192.168.155.200:3000/mulcourse', {
           arr,
           rollno,
         });

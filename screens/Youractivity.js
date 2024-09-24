@@ -42,7 +42,7 @@ const Youractivity = ({ navigation }) => {
 
   let inserturi = async () => {
     try {
-      const response = await axios.post('http://192.168.166.200:3000/uri', {
+      const response = await axios.post('http://192.168.155.200:3000/uri', {
         cname,
         roll,
         vname,
@@ -139,7 +139,7 @@ const Youractivity = ({ navigation }) => {
   useEffect(() => {
     const uploadedvideos = async () =>{
       try {
-        const response = await axios.get('http://192.168.166.200:3000/uploadedvideos',
+        const response = await axios.get('http://192.168.155.200:3000/uploadedvideos',
           {
             params:{
               rollno: roll

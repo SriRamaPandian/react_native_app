@@ -15,7 +15,7 @@ const Searchpage = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.166.200:3000/search',
+        const response = await axios.get('http://192.168.155.200:3000/search',
           {
             params:{
               search: text
